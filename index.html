@@ -87,7 +87,7 @@
                 </div>
                 <div class="block_3__area">
                     <div class="push">
-                        <textarea @input="resizeArea($event)" placeholder="Place script here"></textarea>
+                        <textarea @input="resizeArea($event)" @change="replaceDoubleQuotes($event)" placeholder="Place script here"></textarea>
                         <button @click="copyValue($event)" class="btn btn-copy"></button>
                         <button @click="addCodeTemplate($event)" class="btn btn-code" data-template="0">+ Almightypush</button>
                         <button @click="addCodeTemplate($event)" class="btn btn-code" data-template="1">+ OneSignal</button>
