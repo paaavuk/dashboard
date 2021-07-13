@@ -70,11 +70,12 @@ const code = {
         },
         // * replase double quotes in textarea
         replaceDoubleQuotes(e) {
+            const value = e.target.value;
             const regexp = /""/g;
-            const onesignal = e.target.value.toLowerCase().search('async') !== -1 ? 1 : 0;
+            const onesignal = value.toLowerCase().search('async') !== -1 ? 1 : 0;
 
-            if (!onesignal) {
-                e.target.value  = e.target.value.replace(regexp, '"')
+            if (!onesignal && e.target.value.search(regexp) !== -1) {
+                e.target.value  = value.replace(regexp, '"')
                 this.showNotify('Doubled quotes replaced', 'success');
             }
         },
