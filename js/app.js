@@ -81,6 +81,8 @@ const code = {
         },
         // * add code template to textarea
         addCodeTemplate(e) {
+            e.preventDefault();
+
             const textarea = e.target.parentNode.firstChild;
             textarea.value = this.templates[+e.target.dataset.template];
             // * need to resize textarea
@@ -158,7 +160,9 @@ const code = {
 
         },
         // * open & close modal functions
-        showModal() {
+        showModal(e) {
+            e.preventDefault();
+
             document.querySelector('#modal').style.visibility = 'visible';
             document.querySelector('#modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
