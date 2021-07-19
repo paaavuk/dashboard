@@ -151,11 +151,11 @@ label {
 .overlay {
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  visibility: hidden;
+  display: none;
 }
 
 .overlay .modal {
@@ -166,8 +166,8 @@ label {
   max-width: 85%;
   width: 85%;
   position: relative;
-  -webkit-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+  -webkit-animation: slideDown 0.3s;
+          animation: slideDown 0.3s;
 }
 
 .overlay .modal__header {
@@ -240,6 +240,28 @@ label {
   }
 }
 
+@-webkit-keyframes slideDown {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
 @font-face {
   font-family: "Montserrat Light";
   src: url("./fonts/Montserrat-Light.ttf") format("ttf");
@@ -260,15 +282,6 @@ html {
 body {
   font-family: "Montserrat Light", sans-serif;
   background-color: #F5F5F5;
-}
-
-.dark {
-  background-color: #121212;
-}
-
-.dark header, .dark section, .dark .clear, .dark .notify {
-  -webkit-filter: invert(90) hue-rotate(180deg);
-          filter: invert(90) hue-rotate(180deg);
 }
 
 .btn {

@@ -165,14 +165,12 @@ const code = {
         showModal(e) {
             e.preventDefault();
 
-            document.querySelector('#modal').style.visibility = 'visible';
             document.querySelector('#modal').style.display = 'block';
             document.body.style.overflow = 'hidden';
         },
         closeModal() {
-            document.querySelector('#modal').style.visibility = 'hidden';
             document.querySelector('#modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            document.body.style.removeProperty('overflow');
         },
         // * save templates to array & localStorage
         saveModalData() {
