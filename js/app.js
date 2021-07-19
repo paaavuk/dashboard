@@ -107,6 +107,8 @@ const code = {
         },
         // * copy value from input
         copyValue(e) {
+            e.preventDefault();
+
             const str = e.target.previousSibling.value;
             if (str) {
                 navigator.clipboard.writeText(str)
@@ -183,7 +185,16 @@ const code = {
                 localStorage[v] ? this.templates[index] = localStorage[v] : '';
             });
         },
-        // confirm before leave
+        clearForm(e) {
+            e.preventDefault();
+
+            let decide = confirm('Are you sure you want to clear data?');
+            if (decide) {
+                document.querySelector('form[name="page"]').reset();
+                this.outcomeLinks = [];
+                this.incomeLinksNumber = this.outcomeLinksNumber = 0;
+            }
+        }
     },
     beforeMount() {
         // load data from localStorage
