@@ -15,6 +15,7 @@ const code = {
                 '<script type="text/javascript" src="js/backoffer.js"></script>\n<script type="text/javascript">\n(function (w) {\n    w.backOfferUrl = \'PLACE_YOUR_DATA_HERE\'\n}(window));\n</script>'
             ],
             lineToReplace: 'PLACE_YOUR_DATA_HERE',
+            darkTheme: false,
         }
     },
     methods: {
@@ -129,6 +130,7 @@ const code = {
         },
         // * open link with worker url
         openWorkerLink(e) {
+            e.preventDefault();
             const url = e.target.previousSibling.value;
             url ? window.open(url, '_blank') : this.showNotify('Empty URL');
         },
@@ -184,11 +186,14 @@ const code = {
         },
         // * load data to array from localStorage (if it exists)
         loadLocalStorageData() {
+
+            // * code templates
             this.templates.forEach( (el, index) => {
                 let v = 'temp_' + index;
                 localStorage[v] ? this.templates[index] = localStorage[v] : '';
             });
         },
+        // * clear data from inputs
         clearForm(e) {
             e.preventDefault();
 
@@ -197,6 +202,7 @@ const code = {
                 document.querySelector('form[name="page"]').reset();
                 this.outcomeLinks = [];
                 this.incomeLinksNumber = this.outcomeLinksNumber = 0;
+                this.showNotify('Data cleared', 'success');
             }
         }
     },
