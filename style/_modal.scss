@@ -48,7 +48,7 @@
 
             p {
                 font-size: 1.4rem;
-                padding-top: 3rem;
+                // padding-top: 3rem;
             }
 
             .code_str {
@@ -63,7 +63,8 @@
             .btn {
                 width: 100%;
 
-                &:hover, &:focus {
+                &:hover,
+                &:focus {
                     transform: none;
                     background-color: lighten($color-primary, 5%);
                 }

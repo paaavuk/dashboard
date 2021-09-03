@@ -76,7 +76,7 @@ const code = {
             const onesignal = value.toLowerCase().search('async') !== -1 ? 1 : 0;
 
             if (!onesignal && e.target.value.search(regexp) !== -1) {
-                e.target.value  = value.replace(regexp, '"')
+                e.target.value = value.replace(regexp, '"')
                 this.showNotify('Doubled quotes replaced', 'success');
             }
         },
@@ -95,7 +95,7 @@ const code = {
             const sp = textarea.value.indexOf(sub);
             const ep = sp + sub.length;
             this.stringToReplase(textarea, sp, ep);
-            this.showNotify('Tepmlate #'+ (+e.target.dataset.template + 1) +' added', 'success');
+            this.showNotify('Tepmlate #' + (+e.target.dataset.template + 1) + ' added', 'success');
         },
         // * select phrase to replace function
         stringToReplase(el, start, end) {
@@ -127,6 +127,71 @@ const code = {
                 this.showNotify('Empty input, nothing to copy');
                 console.info('Empty input, nothing to copy')
             }
+        },
+        // * generate results links
+        generateLinks(e) {
+            e.preventDefault();
+            let links = e.target.previousSibling.value;
+            let newDomain = document.querySelector('#inp_2_1').value;
+            let result = '';
+
+            if (!links.length) {
+                this.showNotify('Empty input, nothing to generate');
+                return;
+            }
+
+            if (!newDomain.length) {
+                this.showNotify('New domain needeed');
+                return;
+            }
+
+            let str = links.split('\n');
+            this.removeEmptyString(str, '');
+
+            str = str.map(item => {
+                item = new URL(item);
+                return item.pathname[item.pathname.length - 1] === '/' ? (item.pathname).slice(0, -1) : item.pathname;
+            });
+
+            const names = str.map(item => {
+                item = item.split('/');
+                return item[item.length - 1]
+            });
+
+            result = names.map(item => {
+                return newDomain + item + '/\n';
+            });
+
+            const area = document.querySelector('#inp_4_1');
+            result.forEach((item, index) => {
+                area.value += item;
+                index === (result.length - 1) ? area.value += '\n' : '';
+            });
+
+            area.style.height = "auto";
+            area.style.height = (area.scrollHeight) + "px";
+
+            this.showNotify('Links to completed jumps generated', 'success')
+            setTimeout(() => {
+                this.showNotify('Don`t forget to check it');
+            }, 1000);
+        },
+        // * remove empty string from array
+        removeEmptyString(arr, value) {
+            var i = 0;
+            while (i < arr.length) {
+                if (arr[i] === value) {
+                    arr.splice(i, 1);
+                } else {
+                    ++i;
+                }
+            }
+            return arr;
+        },
+        // * add slash to new domain if isn`t exist
+        addSlashToDomain(e) {
+            let value = e.target.value;
+            e.target.value = (value[value.length - 1] !== '/' && value.length) ? value + '/' : value;
         },
         // * open link with worker url
         openWorkerLink(e) {
@@ -162,14 +227,14 @@ const code = {
 
         },
         // * open & close modal functions
-        showModal(e) {
+        showModal(e, id) {
             e.preventDefault();
 
-            document.querySelector('#modal').style.display = 'block';
+            document.querySelector('#modal_' + id).style.display = 'block';
             document.body.style.overflow = 'hidden';
         },
-        closeModal() {
-            document.querySelector('#modal').style.display = 'none';
+        closeModal(id) {
+            document.querySelector('#modal_' + id).style.display = 'none';
             document.body.style.removeProperty('overflow');
         },
         // * save templates to array & localStorage
@@ -186,7 +251,7 @@ const code = {
         loadLocalStorageData() {
 
             // * code templates
-            this.templates.forEach( (el, index) => {
+            this.templates.forEach((el, index) => {
                 let v = 'temp_' + index;
                 localStorage[v] ? this.templates[index] = localStorage[v] : '';
             });
@@ -207,10 +272,10 @@ const code = {
     beforeMount() {
         // load data from localStorage
         this.loadLocalStorageData(),
-        // confirm before leave
-        window.onbeforeunload = function(e) {
-            return 'Unsaved data may be lost. Close tab?'
-        };
+            // confirm before leave
+            window.onbeforeunload = function(e) {
+                // return 'Unsaved data may be lost. Close tab?'
+            };
     }
 }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAc/8AAAAAAABaxwAAX9QA////AABl4AAAbPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAAAAAEEUAAAAACIkERQiIgACIkEREUIiIDM0FEQRQzMzMzNDM0EUMzNVVVVVVBRVVVVVVVVVQUVVZmZmZmZkFGZmZmZmZmZGZgAAAAAAAAAAEAAAAAAAAAGAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAA" />
     <meta charset="UTF-8">
@@ -10,6 +11,7 @@
     <title>Task Helpdesk</title>
     <script src="https://unpkg.com/vue@next"></script>
 </head>
+
 <body>
     <div id="app">
         <!-- menu -->
@@ -19,9 +21,9 @@
                     <a href="#" class="navbar__logo">Helpdesk</a>
                     <button @click="showMenu = !showMenu" class="navbar__icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 12H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 6H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3 18H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 12H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 6H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 18H21" stroke="#3C5BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
                 </div>
@@ -35,6 +37,9 @@
                     <li class="navbar__menu_item">
                         <a href="https://developers.google.com/speed/libraries" target="_blank" class="navbar__menu_link">Google JQuery</a>
                     </li>
+                    <li class="navbar__menu_item">
+                        <button @click="showModal($event, 2)" class="navbar__menu_link navbar__menu_link-new">Changelog</button>
+                    </li>
                 </ul>
             </nav>
         </header>
@@ -44,6 +49,7 @@
                 <!-- jumps -->
                 <section class="block block_1">
                     <textarea @input="countLines($event), resizeArea($event)" data-type='in' placeholder="Place here jumps to copy"></textarea>
+                    <button @click="generateLinks($event)" class="btn btn-edit"></button>
                     <span class="tag" :class="{ 'tag-active': incomeLinksNumber }"><output>{{ incomeLinksNumber }}</output> lines in field</span>
                 </section>
 
@@ -51,7 +57,7 @@
                 <section class="block block_2">
                     <label for="inp_2_1">New domain</label>
                     <div class="block__links">
-                        <input id="inp_2_1" type="text" placeholder="New domain" rows="5">
+                        <input id="inp_2_1" @change="addSlashToDomain($event)" type="text" placeholder="New domain" rows="5">
                         <button @click="copyValue($event)" class="btn btn-copy"></button>
                     </div>
 
@@ -84,7 +90,7 @@
                 <section class="block block_3">
                     <div class="block_3__controls">
                         <!-- <button @click="addNewScriptBlock($event)" class="btn btn-add"></button> -->
-                        <button @click="showModal($event)" class="btn btn-settings"></button>
+                        <button @click="showModal($event, 1)" class="btn btn-settings"></button>
                     </div>
                     <div class="block_3__area">
                         <div class="push">
@@ -100,7 +106,7 @@
                 <!-- done links -->
                 <section class="block block_4">
                     <div class="block_4__area">
-                        <textarea @input="countLines($event), resizeArea($event)" @change="generateCompletedLinks($event)" data-type='out' placeholder="Place here completed jumps"></textarea>
+                        <textarea id="inp_4_1" @input="countLines($event), resizeArea($event)" @change="generateCompletedLinks($event)" data-type='out' placeholder="Place here completed jumps"></textarea>
                         <button @click="copyValue($event)" class="btn btn-copy"></button>
                         <span class="tag" :class="{ 'tag-active': outcomeLinksNumber }"><output>{{ outcomeLinksNumber }}</output> lines in field</span>
                     </div>
@@ -119,12 +125,12 @@
         <!-- parent for popups -->
         <div class="notify"></div>
 
-        <!-- modal -->
-        <div id="modal" class="overlay">
+        <!-- settings modal -->
+        <div id="modal_1" class="overlay">
             <div class="modal">
                 <div class="modal__header">
                     <h1>Template settings</h1>
-                    <button class="btn btn-close" @click="closeModal" class="modal__close"></button>
+                    <button class="btn btn-close" @click="closeModal(1)" class="modal__close"></button>
                 </div>
                 <div class="modal__content">
                     <h2>Almightypush code tamplate:</h2>
@@ -140,9 +146,55 @@
                 </div>
             </div>
         </div>
+        <!-- changelog modal -->
+        <div id="modal_2" class="overlay">
+            <div class="modal">
+                <div class="modal__header">
+                    <h1>Change log</h1>
+                    <button class="btn btn-close" @click="closeModal(2)" class="modal__close"></button>
+                </div>
+                <div class="modal__content">
+                    <h2>03.09.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add automatic slash complition to new domain field.</p>
+                        </li>
+                        <li>
+                            <p>Add "one-click" generating result links button.</p>
+                        </li>
+                        <li>
+                            <p>Add a changelog link in header menu.</p>
+                        </li>
+                    </ul>
+                    <h2>19.07.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add "one-click" clear fields button.</p>
+                        </li>
+                    </ul>
+                    <h2>12.07.2021</h2>
+                    <ul class="changelog">
+                        <li>
+                            <p>Add autoreplacing double quotes for script field.</p>
+                        </li>
+                        <li>
+                            <p>Add templates settings.</p>
+                        </li>
+                        <li>
+                            <p>Add templates for script field.</p>
+                        </li>
+                    </ul>
 
+                </div>
+                <!-- <div class="modal__footer">
+                    <button @click="saveModalData" class="btn btn-save"></button>
+                </div> -->
+            </div>
         </div>
+
+    </div>
     </div>
     <script src="./js/app.js"></script>
 </body>
+
 </html>

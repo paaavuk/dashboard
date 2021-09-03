@@ -4,7 +4,7 @@
     padding: 1.5rem 2rem;
     width: 100%;
     box-shadow: 0px 4px 16px rgba(17, 17, 17, 0.04);
-    
+
     &__header {
         display: flex;
         justify-content: space-between;
@@ -31,9 +31,18 @@
             color: $color-primary;
         }
 
-        &_link, &_link:visited {
+        &_link,
+        &_link:visited {
+            background-color: transparent;
+            border-width: 0;
+            cursor: pointer;
             text-decoration: none;
             color: $color-text;
+
+        }
+
+        &_link-new {
+            color: $color-primary
         }
     }
 
@@ -41,7 +50,7 @@
         margin-top: 1rem;
         display: block;
     }
-    
+
 
     &__icon {
         background-color: transparent;
