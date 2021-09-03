@@ -274,7 +274,7 @@ const code = {
         this.loadLocalStorageData(),
             // confirm before leave
             window.onbeforeunload = function(e) {
-                // return 'Unsaved data may be lost. Close tab?'
+                return 'Unsaved data may be lost. Close tab?'
             };
     }
 }
